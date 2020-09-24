@@ -3,8 +3,9 @@ import time
 import logging
 
 import tweepy
-from setup import create_api
 
+from setup import create_api
+from helper import get_cadidates_twitter_user_id
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
@@ -36,6 +37,8 @@ class TweeterElectionListener(tweepy.StreamListener):
 
 def main():
 
+    users_id = get_cadidates_twitter_user_id()
+
     api = create_api()
     listener = TweeterElectionListener()
     
@@ -44,7 +47,7 @@ def main():
     try:
         
         logger.info('Start Streaming.')
-        stream.filter(track=['eleição'])
+        stream.filter(follow=users_id)
 
     except KeyboardInterrupt as e :
         logger.info("Stop Streaming.")
